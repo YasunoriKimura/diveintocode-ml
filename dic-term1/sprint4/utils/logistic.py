@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 
 class ScratchLogisticRegression:
-    def __init__(self, num_iter=300, lam=0.01, lr=0.01,bias=False, coef=False, verbose=False):
+    def __init__(self, num_iter=300, lam=0.001, lr=0.01,bias=False, coef=False, verbose=False):
         self.iter = num_iter
         self.lam = lam
         self.bias = bias
@@ -31,8 +31,6 @@ class ScratchLogisticRegression:
     
     def _gradient_descent(self, X, y, X_val, y_val):
         m = len(y)
-#         train_loss = self.train_loss
-#         val_loss = self.val_loss
         for i in range(self.iter):
             error = self._logstic_hypothesis(X) - y
             common_part = (1/m) * np.dot(X.T, error)
@@ -70,15 +68,12 @@ class ScratchLogisticRegression:
         plt.plot(range(self.iter), self.val_loss, label='val_loss')
         plt.legend()
     
-    def scatter(self, x1, x2):
+    def scatter(self, X, y):
         """
         任意の特徴量をscatterと決定曲線を引く関数
-        
-        parameters
-        x1：　x軸にとる特徴量のarray
-        x2：　y軸にとる特徴量のarray
         """
-        plt.scatter(x1, x2, label='aaa')
+        plt.scatter(X[np.where(y==1)[0], 0], X[np.where(y==1)[0], 1], label='1', c='red')
+        plt.scatter(X[np.where(y==0)[0], 0], X[np.where(y==0)[0], 1], label='0', c='blue')
         x = range(-3, 3, 1)
         plt.plot(x, -(self.coef[0] + self.coef[1] * x) / self.coef[2])
         plt.legend()
